@@ -114,10 +114,20 @@ select age, count(age) from std group by age having count(age) > 2;
 
 
 --How do you join two tables using INNER JOIN?
+DESC EMPLOYEES;
+DESC DEPARTMENTS;
+
+SELECT E.*,D.* FROM EMPLOYEES E INNER JOIN DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
 
 --How do you use LEFT JOIN to include unmatched rows?
 
+SELECT E.*,D.* FROM EMPLOYEES E LEFT JOIN DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
+
 --How do you use RIGHT JOIN and FULL JOIN?
+
+SELECT E.*,D.* FROM EMPLOYEES E RIGHT JOIN DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
+
+SELECT E.*,D.* FROM EMPLOYEES E FULL OUTER JOIN DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
 
 --How do you join three or more tables?
 
@@ -137,7 +147,35 @@ select age, count(age) from std group by age having count(age) > 2;
 
 --How do you define a primary key while creating a table?
 
+
+CREATE TABLE NEW_TBL(
+EMP_ID NUMBER PRIMARY KEY,
+EMP_NAME VARCHAR2(20),
+EMP_SAL NUMBER,
+EMP_DOB DATE
+);
+
+--DROP TABLE NEW_TBL;
+
 --How do you set a default value for a column?
+
+CREATE TABLE NEW_TBL (
+    EMP_ID   NUMBER PRIMARY KEY,
+    EMP_NAME VARCHAR2(20),
+    EMP_SAL  NUMBER,
+    EMP_DOB  DATE,
+    STATUS   CHAR(1) DEFAULT 'Y'
+);
+
 
 --How do you add a UNIQUE constraint to a column?
 
+
+CREATE TABLE tbl (
+    emp_id    NUMBER PRIMARY KEY,
+    email     VARCHAR2(50) UNIQUE,  -- unique constraint here
+    emp_name  VARCHAR2(50)
+);
+
+
+--drop table tbl;
