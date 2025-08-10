@@ -1,4 +1,5 @@
---? DDL – Data Definition Language
+--**************************************** DDL – Data Definition Language    **********************************************
+
 
 --How do you create a table named students with columns id, name, and age?
 
@@ -12,9 +13,13 @@ select * from std;
 
 drop table std;
 
+
+
 --How do you add a new column email to an existing table students?
 
 alter table std add email varchar2(200);
+
+
 
 --How do you modify the data type of a column age in a table?
 
@@ -39,7 +44,7 @@ select * from std;
 drop table std;
 
 
---? DML – Data Manipulation Language
+--********************************************************  DML – Data Manipulation Language   *******************************************
 
 --How do you insert a new record into the students table?
 
@@ -55,7 +60,7 @@ update std set age = 26 where id = 3;
 
 delete from std where id = 5;
 
---? DQL – Data Query Language
+--****************************************************************   DQL – Data Query Language   ***********************************************
 
 
 --How do you select all data from a table?
@@ -74,7 +79,7 @@ select * from std where name like '%BC%';
 
 select * from std order by id desc;
 
---? Aggregate Functions
+--*****************************************************************   Aggregate Functions   *************************************************
 
 
 --How do you count the total number of rows in a table?
@@ -94,7 +99,7 @@ select avg(age) as average_age from std;
 select min(age) as mininmum_age , max(age) as maximum_age from std;
 
 
---? GROUP BY and HAVING
+--****************************************************************************** GROUP BY and HAVING   *********************************************
 
 
 --How do you group data by a specific column?
@@ -110,7 +115,7 @@ select age,count(age) from std group by age order by count(age) desc;
 select age, count(age) from std group by age having count(age) > 2;
 
 
---?? Joins
+--******************************************************************************** Joins   *****************************************************
 
 
 --How do you join two tables using INNER JOIN?
@@ -132,17 +137,34 @@ SELECT E.*,D.* FROM EMPLOYEES E FULL OUTER JOIN DEPARTMENTS D ON E.DEPARTMENT_ID
 --How do you join three or more tables?
 
 
---? Subqueries and Nested Queries
+SELECT e.employee_id, e.first_name, d.department_name, l.city
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id;
+
+
+
+--********************************************************************* Subqueries and Nested Queries  *****************************************************
 
 
 --How do you use a subquery in the WHERE clause?
 
+--ex.  2nd highest salary
+--select * from employees order by salary desc;
+select max(salary) from employees where salary < (select max(salary) from employees);
+
 --How do you find records with values greater than the average?
+
+select salary from employees where salary > (select avg(salary) from employees);
+
+--select avg(salary) from employees;
 
 --How do you use a subquery in the FROM clause?
 
+select * from (select * from departments) d;
 
---? Constraints and Keys
+
+--********************************************************************** Constraints and Keys   ************************************************************
 
 
 --How do you define a primary key while creating a table?
