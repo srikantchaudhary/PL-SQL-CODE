@@ -1,0 +1,728 @@
+select * from emp;
+
+
+
+-- 1. Procedure
+-- Definition: A stored program in the database that performs a specific task.
+-- Benefit: Allows for reusable code, easier maintenance, and improved performance by reducing network traffic.
+
+
+-- 2. Function
+-- Definition: Similar to a procedure, but it returns a value.
+-- Benefit: Useful for computations and can be used in SQL statements.
+
+
+-- 3. Cursor
+-- Definition: A database object that retrieves and processes a set of rows from a query.
+-- Benefit: Allows row-by-row processing of query results, making it easier to handle complex data retrieval.
+
+
+-- 4. Record
+-- Definition: A composite data structure that can hold multiple values of different types.
+-- Benefit: Simplifies the management of related data items as a single unit.
+
+
+-- 5. Exception
+-- Definition: A way to handle errors and unusual conditions in your code.
+-- Benefit: Improves code robustness and allows for graceful error handling.
+
+
+-- 6. Trigger
+-- Definition: A stored program that automatically executes in response to certain events on a table or view.
+-- Benefit: Enforces business rules, maintains data integrity, and automatically updates related data.
+
+
+-- 7. Package
+-- Definition: A collection of related procedures, functions, variables, and other PL/SQL constructs.
+-- Benefit: Organizes code into logical units, improves code reusability, and can hide implementation details.
+
+
+-- 8. Collection
+-- Definition: A group of elements, such as arrays, lists, or sets, that can be manipulated as a single unit.
+-- Benefit: Facilitates the handling of multiple values as a single entity, making it easier to manage data in bulk.
+
+
+
+
+------------------------------------   Procedure  ------------------------------------------
+
+create or replace procedure myFirstProc
+is
+begin
+    dbms_output.put_line('hiii');
+end;
+/
+-- We have already created the procedure  Now our task is to execute the procedure
+
+begin
+    myFirstProc;
+end;
+/
+
+
+
+
+-- =======================================================================================================================================================================================
+-- =======================================================================    Questions  of Procedure   ==================================================================================
+-- =======================================================================================================================================================================================
+
+
+-- 1)  Write a PL/SQL procedure to print "HELLO WORLD!"
+
+create or replace procedure hello_world is
+begin
+    dbms_output.put_line('HELLO WORLD!');
+end;
+begin
+    hello_world;
+end;
+/
+
+
+-- 2)  Write a PL/SQL procedure to calculate the sum of two numbers.
+
+create or replace procedure sum_two_numbers(a in number , b in number , c out number ) is
+begin
+    c := a+b;
+    dbms_output.put_line(c);
+end;
+declare
+    x number;
+    y number;
+    ans number;
+begin
+    x := 19;
+    y := 20;
+    sum_two_numbers(x,y,ans);
+end;
+/
+
+
+
+-- 3)  Write a PL/SQL procedure to find the maximum of two numbers;
+
+create or replace procedure max_two_number(a in number, b in number , maxi out number) is
+begin
+    if a > b then 
+       maxi := a;
+       dbms_output.put_line(' maximum of two number is a:  '|| maxi);
+    else
+        maxi := b;
+        dbms_output.put_line('maximum of two number is b : '|| maxi);
+    end if;
+end;
+declare
+    x number;
+    y number;
+    result number;
+begin
+    x := 200;
+    y := 30;
+    max_two_number(x,y,result);
+end;
+/
+
+
+-- 4)  Write a PL/SQL procedure to check if a number is even or odd.
+
+create or replace procedure check_even_odd(a in number) is
+begin
+    if a mod 2 = 0 then 
+        dbms_output.put_line(' a is an even number  '|| a);
+    else
+        dbms_output.put_line('a is an odd number '|| a);
+    end if;
+end;
+begin
+    check_even_odd(5);
+end;
+/
+
+
+-- 5) Write a PL/SQL procedure to calculate the factorial of a number.
+create or replace procedure factorial(num in number , result out number) is
+    fact number := 1;
+begin
+    for i in 1..num loop
+        fact := fact*i;
+    end loop;
+    result := fact;
+end;
+declare
+    a number;
+    b number;
+begin
+    a := 5;
+    factorial(a,b);
+    dbms_output.put_line(b);
+end;
+/
+
+
+-- 6) Write a PL/SQL procedure to reverse a string.
+
+create or replace procedure reverse_string(input_str in varchar2, output_str out varchar2) is
+begin
+    for i in reverse 1..length(input_str) loop
+        output_str := output_str || substr(input_str,i,1);
+    end loop;
+end;
+declare
+    str1 varchar2(50);
+    ans varchar2(50);
+begin
+    str1 := 'Srikant';
+    reverse_string(str1,ans);
+    dbms_output.put_line(ans);
+end;
+/
+
+
+-- 7) Write a PL/SQL procedure to find the length of a string.
+
+create or replace procedure str_length(input_str in varchar2, length_string out number) is
+begin
+    length_string := length(input_str);
+end;
+declare
+    input_str varchar2(50);
+    length_string number;
+begin
+    input_str := 'srikant';
+    str_length(input_str,length_string);
+    dbms_output.put_line(length_string);
+end;
+/
+-- 8) Write a PL/SQL procedure to check if a number is prime.
+
+create or replace procedure check_prime(num in number, is_prime out varchar2) is
+    cnt number := 0;
+begin
+    if num <= 1 then
+        is_prime := 'NO';
+    else
+        for i in 2..floor(sqrt(num)) loop
+            if mod(num,i) = 0 then
+                cnt := cnt + 1;
+            end if;
+        end loop;
+        if cnt = 0 then
+            is_prime := 'YES';
+        else
+            is_prime := 'NO';
+        end if;
+    end if;
+end;
+declare
+    num1 number;
+    ans varchar2(20);
+begin
+    num1 := 20;
+    check_prime(num1,ans);
+    dbms_output.put_line(ans);
+end;
+/
+-- 9) Write a PL/SQL procedure to find the GCD of two numbers.
+CREATE OR REPLACE PROCEDURE gcd_two_numbers(p IN NUMBER, b IN NUMBER, gcd_val OUT NUMBER) IS
+    p_local NUMBER := p;
+    b_local NUMBER := b;
+BEGIN
+    WHILE b_local != 0 LOOP
+        gcd_val := b_local;
+        b_local := MOD(p_local, b_local);
+        p_local := gcd_val;
+    END LOOP;
+    gcd_val := p_local;
+END;
+declare
+    x number;
+    y number;
+    z number;
+begin
+    x := 5;
+    y := 10;
+    gcd_two_numbers(x,y,z);
+    dbms_output.put_line('GCD of number '|| x ||' and number '|| y ||' Is :  '|| z);
+end;
+/
+
+-- 10) Write a PL/SQL procedure to swap two numbers.
+
+create or replace procedure swap_two_numbers(a in out number , b in out number) is
+    temp number;
+begin
+    temp := a;
+    a := b;
+    b := temp;
+end;
+declare
+    x number;
+    y number;
+begin
+    x := 10;
+    y := 20;
+    dbms_output.put_line('Initial numbers are x :  '|| x ||' and y : '|| y);
+    swap_two_numbers(x,y);
+    dbms_output.put_line('After Swaping numbers the output is x:  '|| x || ' and y:  '||y);
+end;
+/
+
+
+-- ===========================================================================================================
+----------------------------------------   Procedure Question using table  ----------------------------
+-- ======================================================================================================
+select * from emp;
+
+-- 1. Write a procedure to insert a new employee into the employees table.
+
+create or replace procedure insert_emp(p_empno in number, p_ename in varchar,p_job in varchar,p_mgr in number,p_hiredate in date,p_sal in number, p_comm in number, p_deptno in number) is
+begin
+    insert into emp (empno,ename,job,mgr,hiredate,sal,comm,deptno) values(p_empno,p_ename,p_job,p_mgr,p_hiredate,p_sal,p_comm,p_deptno);
+end;
+BEGIN
+    insert_emp(7671, 'PL/SQL', 'HR', 7839, TO_DATE('05/05/2003', 'DD/MM/YYYY'), 8000, 2, 20);
+END;
+/
+
+-- 2. Write a procedure to update an employee's salary in the employees table.
+
+create or replace procedure update_sal(p_empno in number,p_salary in number) is
+begin
+    update emp set sal = p_salary where empno = p_empno;
+end;
+begin
+    update_sal(7671,18000);
+end;
+/
+
+-- 3. Write a procedure to delete an employee from the employees table by employee ID.
+
+create or replace procedure delete_emp(p_empid in number) is
+begin
+    delete from emp where empno = p_empid;
+end;
+begin
+    delete_emp(7671);
+    dbms_output.put_line('Employee Sucessfully Deleted ');
+end;
+/
+-- 4. Write a procedure to increase the salary of all employees by a given percentage.
+
+create or replace procedure salary_increment(percentage in number) is
+begin
+    update emp set sal = sal + (sal*percentage / 100);
+end;
+begin
+    salary_increment(50);
+end;
+/
+-- 5. Write a procedure to find and display the details of an employee by employee ID.
+create or replace procedure display_details(p_empid in number) is
+p_name emp.ename%type;
+p_sal emp.sal%type;
+begin
+    select ename,sal into p_name,p_sal from emp where empno = p_empid;
+    dbms_output.put_line(p_name || ' and salary is '||p_sal);
+    exception
+        when no_data_found then
+            dbms_output.put_line('Employee not found ');
+end;
+begin 
+    display_details(7782);
+end;
+/
+-- 6. Write a procedure to insert multiple employees into the employees table using a cursor.
+-- 7. Write a procedure to transfer an employee to a new department.
+
+create or replace procedure transfer_emp(p_empid in number) is
+begin
+    update emp set job = 'POLICE' where empno = p_empid;
+end;
+begin
+    transfer_emp(7839);
+end;
+/
+-- 8. Write a procedure to calculate the total salary of all employees in a specific department.
+
+create or replace procedure calculate_salary(p_dept in varchar2,count_total_salary out number) is
+begin
+    -- dbms_output.put_line(p_dept);
+    select sum(sal) into count_total_salary from emp where job = p_dept;
+    -- dbms_output.put_line(count_total_salary);
+end;
+declare
+    department varchar2(50);
+    total_salary number;
+begin
+    department := 'MANAGER';
+    calculate_salary(department,total_salary);
+    dbms_output.put_line('Total salary for the Department '|| department || ' is '|| total_salary);
+end;
+/
+-- 9. Write a procedure to display the details of all employees in a specific department.
+create or replace procedure all_emp_with_dept(dept in varchar2) is
+id emp.empno%type;
+name emp.ename%type;
+job1 emp.job%type;
+salary emp.sal%type;
+begin
+    select empno,ename,job,sal into id,name,job1,salary from emp where job = dept;
+    dbms_output.put_line('emp id: '|| id ||' name: '||name||' job : '||job1||' salary: '||salary);
+end;
+begin
+    all_emp_with_dept('POLICE');
+end;
+/
+-- 10. Write a procedure to give a bonus to all employees who have been with the company for more than 5 years.
+
+create or replace procedure bonus_to_all(bonus in number) is
+begin
+    update emp set sal = sal +(sal*bonus/100);
+end;
+begin
+    bonus_to_all(10);
+end;
+/
+-- ==================================================================================================================================================================================================
+-- ================================================================================================  FUNCTIONS ======================================================================================
+-- ==================================================================================================================================================================================================
+
+-- 1. Write a PL/SQL function to return "Hello, World!".
+
+create or replace function hello_world1 return varchar2 is
+begin
+    return 'hello world!';
+end;
+declare
+    res varchar2(50);
+begin
+    res := hello_world1;
+    dbms_output.put_line(res);
+end;
+/
+
+-- 2. Write a PL/SQL function to calculate the sum of two numbers.
+
+create or replace function two_sum(a number, b number) 
+return number is
+begin
+    return a+b;
+end;
+declare 
+    a number;
+    b number;
+    c number;
+begin
+    a := 10;
+    b := 23;
+    c := two_sum(a,b);
+    dbms_output.put_line(c);
+end;
+/
+-- 3. Write a PL/SQL function to find the maximum of two numbers.
+
+create or replace function max_in_two(a number, b number)
+return number is
+begin 
+    if a > b then
+        return a;
+    else
+        return b;
+    end if;
+end;
+declare
+    x number;
+    y number;
+    ans number;
+begin
+    x := 19;
+    y := 23;
+    ans := max_in_two(x,y);
+    dbms_output.put_line(ans);
+end;
+/
+-- 4. Write a PL/SQL function to check if a number is even.
+
+create or replace function even_odd(a number)
+return varchar2 is
+begin
+    if mod(a,2) = 0 then
+        return 'Even';
+    else
+        return 'Odd';
+    end if;
+end;
+declare
+    ans varchar2(20);
+begin
+    ans := even_odd(50);
+    dbms_output.put_line(ans);
+end;
+/
+-- 5. Write a PL/SQL function to calculate the factorial of a number.
+
+create or replace function factorial1(a number) 
+return number is
+fact1 number := 1;
+begin
+    if a = 0 then
+        return 1;
+    else
+        for i in 1..a loop
+            fact1 := fact1*i;
+        end loop;
+        return fact1;
+    end if;
+end;
+declare
+    ans number;
+begin
+    ans := factorial1(6);
+    dbms_output.put_line(ans);
+end;
+/
+-- 6. Write a PL/SQL function to reverse a string.
+
+create or replace function rev_string(str varchar2)
+return varchar2 is
+res varchar2(50);
+begin
+    for i in reverse 1..length(str) loop
+        res := res || substr(str,i,1);
+    end loop;
+    return res;
+end;
+declare
+    str1 varchar2(50);
+begin
+   str1 :=  rev_string('hello srikant');
+   dbms_output.put_line(str1);
+end;
+/
+
+
+-- 7. Write a PL/SQL function to find the length of a string.
+-- 8. Write a PL/SQL function to check if a number is prime.
+-- 9. Write a PL/SQL function to find the GCD of two numbers.
+-- 10. Write a PL/SQL function to swap two numbers.
+
+-- ===========================================================================================================
+----------------------------------------   Function Question using table  ----------------------------
+-- ======================================================================================================
+
+-- 1. Write a function to get the salary of an employee by employee ID.
+
+create or replace function get_salary(empid number)
+return number is
+salary emp.sal%type;
+begin
+    select sal into salary from emp where empno = empid;
+    return salary;
+end;
+declare
+    id emp.empno%type;
+    salary emp.sal%type;
+begin
+    id := 7839;
+    salary := get_salary(id);
+    dbms_output.put_line(salary);
+end;
+/
+-- 2. Write a function to calculate the annual salary of an employee.
+
+create or replace function annual_salary(empid number)
+return number is
+annual_salary emp.sal%type;
+begin
+    select sal*12 into annual_salary from emp where empno = empid;
+    return annual_salary;
+end;
+declare
+    id emp.empno%type;
+    package number;
+begin
+    id := 7839;
+    package := annual_salary(id);
+    dbms_output.put_line(package);
+end;
+/
+
+-- 3. Write a function to get the full name of an employee.
+
+
+create or replace function full_name(empid number)
+return varchar2 is
+name varchar2(50);
+job1 varchar2(50);
+begin
+    select ename,job into name,job1 from emp where empno = empid;
+    return name|| ' , ' || job1;
+end;
+declare
+    name varchar2(50);
+begin   
+    name := full_name(7499);
+    dbms_output.put_line(name);
+end;
+/
+-- 4. Write a function to check if an employee exists by employee ID.
+
+create or replace function emp_exist(e_empid number) 
+return varchar2 is
+val number;
+e_user varchar2(50);
+
+begin
+    select count(empno) into val from emp where empno = e_empid;
+    if val > 0 then
+        return 'Yes User is Present ';
+    else 
+        return 'With this Id There is No User ';
+    end if;
+end;
+declare
+    res varchar2(50);
+begin
+    res := emp_exist(7843);
+    dbms_output.put_line(res);
+end;
+/
+-- 5. Write a function to calculate the average salary of all employees.
+
+create or replace function avg_salary(empid number)
+return number is
+avg_sal number;
+begin
+    select sum(sal)/count(empno) into avg_sal from emp;
+    return avg_sal;
+end;
+declare 
+    total_avg_sal number;
+begin
+    total_avg_sal := avg_salary(7842);
+    dbms_output.put_line(total_avg_sal);
+end;
+/
+-- 6. Write a function to get the department name by department ID.
+-- 7. Write a function to calculate the total salary of a specific department.
+
+
+create or replace function get_totalSalary_of_department(e_dept varchar2)
+return number is
+total_salary number;
+begin
+    select sum(sal) into total_salary from emp where job = e_dept;
+    return total_salary;
+end;
+declare
+    dept varchar2(50);
+    salary number;
+begin
+    dept := 'MANAGER';
+    salary := get_totalSalary_of_department(dept);
+    dbms_output.put_line(salary);
+end;
+/
+-- 8. Write a function to get the highest salary in the employees table.
+
+
+create or replace function get_max_sal(empid number)
+return number is
+max_sal number;
+begin
+    select max(sal) into max_sal from emp;
+    return max_sal;
+end;
+declare
+    max_salary number;
+begin
+    max_salary := get_max_sal(7842);
+    dbms_output.put_line(max_salary);
+end;
+/
+-- 9. Write a function to get the number of employees in a specific department.
+
+create or replace function get_number_of_employess(e_dept varchar2)
+return number is 
+total_user number;
+begin
+    select count(empno) into total_user from emp where job = e_dept;
+    return total_user;
+end;
+declare 
+    total_nubmer_of_user number;
+begin
+    total_nubmer_of_user := get_number_of_employess('MANAGER');
+    dbms_output.put_line(total_nubmer_of_user);
+end;
+/
+
+
+
+-- 10. Write a function to get the email of an employee by employee ID.
+
+create or replace function get_email(e_empid number)
+return varchar2 is
+name1 varchar2(50);
+begin
+    select ename into name1 from emp where empno = e_empid;
+    return name1;
+end;
+declare
+    name2 varchar2(50);
+begin
+    name2 := get_email(7842);
+    dbms_output.put_line(name2);
+end;
+/
+
+
+
+-- ==================================================================================================================================================================================================
+-- ================================================================================================  Cursor  ========================================================================================
+-- ==================================================================================================================================================================================================
+
+
+---------------------------------    Creaing explicit cursor   ---------------------------------------
+declare
+    e_id emp.empno%type;
+    e_name emp.ename%type;
+    e_job emp.job%type;
+    e_salary emp.sal%type;
+    cursor e_emp is      -- define cursor
+        select empno,ename,job,sal from emp;
+begin
+    open e_emp;             --   open cursor
+    loop                    --  run a loop
+    fetch e_emp into e_id,e_name,e_job,e_salary;     --   put values from e_emp to variables
+        exit when e_emp%notfound;                    --   exit when condition when e_emp%notfound     when no rows left;
+        dbms_output.put_line(e_id || '  ' || e_name || '  ' || e_job || '  ' || e_salary );
+    end loop;                       --  end of loop;
+    close e_emp;                    --  close the cursur
+end;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create or replace procedure insert_value_into_table(E_EMPNO IN number, E_ENAME IN varchar2, E_JOB IN varchar2 , E_MGR IN number,E_HIREDATE IN date ,E_SAL IN number, E_COMM IN number,E_DEPTNO IN number) is
+begin
+    insert into EMP(EMPNO,ENAME,JOB,MGR,HIREDATE,SAL,COMM,DEPTNO) values(E_EMPNO,E_ENAME,E_JOB,E_MGR,E_HIREDATE,E_SAL,E_COMM,E_DEPTNO);
+end;
+
+begin
+    insert_value_into_table(9999,'NewUser','software programmer',7839,'07/02/2024',21000,1500,20);
+end;
+/
+
+
