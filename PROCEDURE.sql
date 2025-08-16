@@ -286,6 +286,8 @@ begin
 end;
 /
 -- 6. Write a procedure to insert multiple employees into the employees table using a cursor.
+
+
 -- 7. Write a procedure to transfer an employee to a new department.
 
 create or replace procedure transfer_emp(p_empid in number) is
